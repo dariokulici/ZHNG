@@ -1,24 +1,19 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QGroupBox
 
-class PrinterMenu(QWidget):
+class Printers(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout(self)
 
-        self.eintrag = QLabel("Drucker 1")
-
-        layout.addWidget(self.eintrag)
-
-class BackgroundCard(QFrame):
+class PrinterMenu(QFrame):
     def __init__(self):
         super().__init__()
-        self.setStyleSheet("background-color: #444; border-radius: 8px;")
-
+        self.setFrameShape(QFrame.Shape.Box)
+        self.setLineWidth(1)
         layout = QVBoxLayout(self)
 
-        self.title = QLabel("Drucker")
-        text = QLabel("Text")
+        group = QLabel("Drucker")
+        group.setStyleSheet("font-size: 18px")
 
-        layout.addWidget(text)
-        layout.addWidget(self.title)
-        layout.addWidget(PrinterMenu())
+        layout.addWidget(group)
+        layout.addWidget(Printers())
