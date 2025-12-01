@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-mydatabase}
+      MYSQL_USER: ${DB_USER:-myuser}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-mypassword}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      app-network:
+        ipv4_address: 172.20.0.2
+
+  ubuntu:
+    build:
+      context: .
+      dockerfile: Dockerfile.ubuntu
+    container_name: ubuntu
+    restart: unless-stopped
+    hostname: ubuntu
+    depends_on:
+      - mariadb
+    volumes:
+      - ubuntu_data:/data
+    ports:
+      - "${SSH_PORT:-2222}:22"
+    networks:
+      app-network:
+        ipv4_address: 172.20.0.200
+    command: /usr/sbin/sshd -D
+
+volumes:
+  mariadb_data:
+    driver: local
+  ubuntu_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

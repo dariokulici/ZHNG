@@ -1,0 +1,2 @@
+Ubuntu: 172.20.0.100 (SSH auf Port 22, von extern 2222)
+MariaDB: 172.20.0.2 (MySQL auf Port 3306, von extern 3306)
